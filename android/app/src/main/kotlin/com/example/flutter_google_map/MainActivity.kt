@@ -1,4 +1,4 @@
-package com.example.flutter_google_map
+package com.techwithsam.flutter_google_map
 
 import io.flutter.embedding.android.FlutterActivity
 
