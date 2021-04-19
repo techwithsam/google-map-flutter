@@ -3,7 +3,6 @@ import 'package:flutter_google_map/map.dart';
 import 'package:flutter_google_map/provider/location_provider.dart';
 import 'package:provider/provider.dart';
 
-// AIzaSyBd7b-lB7DVlvdlTH4eqeRtW2odIcR94QY
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
