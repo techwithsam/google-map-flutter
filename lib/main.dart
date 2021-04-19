@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_google_map/map.dart';
+import 'package:flutter_google_map/provider/location_provider.dart';
+import 'package:provider/provider.dart';
 
 // AIzaSyBd7b-lB7DVlvdlTH4eqeRtW2odIcR94QY
 Future<void> main() async {
@@ -10,11 +12,19 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'TechWithSam - Flutter Google Maps & Live Tracking',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      debugShowCheckedModeBanner: false,
-      home: GoogleMapPage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => LocationProvider(),
+          child: GoogleMapPage(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'TechWithSam - Flutter Google Maps & Live Tracking',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        debugShowCheckedModeBanner: false,
+        home: GoogleMapPage(),
+      ),
     );
   }
 }

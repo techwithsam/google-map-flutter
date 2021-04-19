@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_google_map/provider/location_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 class GoogleMapPage extends StatefulWidget {
   GoogleMapPage({Key? key}) : super(key: key);
@@ -16,38 +17,45 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   @override
   void initState() {
     super.initState();
-    _requestPermission();
+    Provider.of<LocationProvider>(context, listen: false).initialization();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TechWithSam - Flutter Google Maps & Live Tracking'),
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: GoogleMap(
-              initialCameraPosition:
-                  CameraPosition(target: LatLng(28.7041, 77.1025), zoom: 18),
-              mapType: MapType.normal,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            ),
+        appBar: AppBar(
+          title: Text(
+            'TechWithSam - Flutter Google Maps & Live Tracking',
+            style: TextStyle(fontSize: 12),
           ),
-        ],
-      ),
-    );
+          elevation: 0,
+        ),
+        body: googleMapUI());
   }
 
-  _requestPermission() async {
-    Map<Permission, PermissionStatus> statuses =
-        await [Permission.location].request();
-
-    final info = statuses[Permission.location].toString();
-    print('$info');
+  Widget googleMapUI() {
+    return Consumer<LocationProvider>(
+      builder: (context, model, child) {
+        if (model.locationPosition != null) {
+          return Column(
+            children: [
+              Expanded(
+                  child: GoogleMap(
+                initialCameraPosition:
+                    CameraPosition(target: model.locationPosition!, zoom: 18),
+                mapType: MapType.normal,
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
+                markers: Set<Marker>.of(model.marker!.values),
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              ))
+            ],
+          );
+        }
+        return Container(child: Center(child: CircularProgressIndicator()));
+      },
+    );
   }
 }
