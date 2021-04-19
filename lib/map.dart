@@ -24,10 +24,8 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            'TechWithSam - Flutter Google Maps & Live Tracking',
-            style: TextStyle(fontSize: 12),
-          ),
+          title: Text('Google Maps with Live Tracking'),
+          centerTitle: true,
           elevation: 0,
         ),
         body: googleMapUI());
